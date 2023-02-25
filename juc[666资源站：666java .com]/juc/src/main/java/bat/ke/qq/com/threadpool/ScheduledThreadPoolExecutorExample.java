@@ -12,10 +12,16 @@ public class ScheduledThreadPoolExecutorExample {
     public static void main(String[] args) {
         ScheduledThreadPoolExecutor executor = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(5);
         Task task = new Task("任务");
+        //只 执行一次 。没啥意义
         System.out.println("Created : " + task.getName());
        // executor.schedule(task, 2, TimeUnit.SECONDS);
-       // executor.scheduleWithFixedDelay(task, 0, 2, TimeUnit.SECONDS); //任务+延迟
-        executor.scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);//任延迟取最大值 稳定定时器
+        //任务耗时+延迟   延迟2秒。任务10秒。那下次就是12秒后
+//        executor.scheduleWithFixedDelay(task, 0, 2, TimeUnit.SECONDS);
+
+        //  初始延迟时间 ， 固定延迟时间，  如果任务大于 调度时间，则按任务， 如果任务小于 周期时间，则按周期时间
+        executor.scheduleAtFixedRate(task, 0, 3, TimeUnit.SECONDS);//任延迟取最大值 稳定定时器
+
+        //!!!! 任务里要 try catch
 
     }
 }
@@ -33,15 +39,16 @@ class Task implements Runnable {
     AtomicInteger atomicInteger=new AtomicInteger();
 
     public void run() {
-        atomicInteger.incrementAndGet();
-        if(true){
 
-            throw  new NullPointerException();
-        }
         System.out.println("Executing : " + name + ", Current Seconds : " + new Date().getSeconds());
         try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
+            Random random=new Random();
+            int i1 = random.nextInt(5);
+            if(i1>0){
+                System.out.println("任务执行时间是："+i1+"秒");
+                Thread.sleep(i1*1000);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

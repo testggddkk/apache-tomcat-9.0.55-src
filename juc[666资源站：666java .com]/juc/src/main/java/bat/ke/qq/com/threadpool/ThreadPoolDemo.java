@@ -2,6 +2,7 @@ package bat.ke.qq.com.threadpool;
 
 import bat.ke.qq.com.MonkeyRejectedExecutionHandler;
 
+import java.util.Random;
 import java.util.concurrent.*;
 
 public class ThreadPoolDemo {
@@ -52,10 +53,14 @@ class MyTask implements Runnable {
 
 
     public static void main(String[] args) {
-        BlockingQueue blockingQueue=new ArrayBlockingQueue(10);
-        blockingQueue.add(1);
-        blockingQueue.add(2);
-        boolean offer = blockingQueue.offer(1);
-        System.out.println(blockingQueue);
+        for(;;){
+            Random random=new Random();
+            int i1 = random.nextInt(10);
+
+            if(i1==3){
+                System.out.println("3333");
+                break;
+            }
+        }
     }
 }
