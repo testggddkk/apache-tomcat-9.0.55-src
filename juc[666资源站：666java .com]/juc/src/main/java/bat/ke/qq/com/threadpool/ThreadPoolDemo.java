@@ -7,8 +7,9 @@ import java.util.concurrent.*;
 public class ThreadPoolDemo {
     public static void main(String[] args) {
         ExecutorService executorService1 = Executors.newCachedThreadPool();//快
-        ExecutorService executorService2 = Executors.newFixedThreadPool(10);//慢
+        ExecutorService executorService2 = Executors.newFixedThreadPool(100);//慢
         ExecutorService executorService3 = Executors.newSingleThreadExecutor();//最慢
+
 
         RejectedExecutionHandler rejectedExecutionHandler=  new RejectedExecutionHandler() {
             @Override
@@ -17,11 +18,14 @@ public class ThreadPoolDemo {
             }
         };
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10, 20,
-                0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(10),new MonkeyRejectedExecutionHandler());//自定义线程
+                0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(10));//自定义线程
+
 
         for (int i = 1; i <= 100; i++) {
-            threadPoolExecutor.execute(new MyTask(i));
-
+//            executorService1.execute(new MyTask(i));
+//            executorService2.execute(new MyTask(i));
+//            executorService3.execute(new MyTask(i));
+threadPoolExecutor.execute(new MyTask(i));
         }
     }
 }
@@ -44,5 +48,14 @@ class MyTask implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static void main(String[] args) {
+        BlockingQueue blockingQueue=new ArrayBlockingQueue(10);
+        blockingQueue.add(1);
+        blockingQueue.add(2);
+        boolean offer = blockingQueue.offer(1);
+        System.out.println(blockingQueue);
     }
 }
