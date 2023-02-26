@@ -8,6 +8,12 @@ public class LockSupportTest {
         Thread parkThread = new Thread(new ParkThread());
         parkThread.start();
 
+        parkThread.setName("1111");
+
+        Thread parkThread1 = new Thread(new ParkThread());
+        parkThread1.start();
+        parkThread1.setName("22222");
+
         System.out.println("唤醒parkThread");
         //为指定线程parkThread提供“许可”
         LockSupport.unpark(parkThread);
@@ -17,10 +23,10 @@ public class LockSupportTest {
 
         @Override
         public void run() {
-            System.out.println("ParkThread开始执行");
+            System.out.println("线程："+ Thread.currentThread().getName()+"ParkThread开始执行");
             // 等待“许可”
             LockSupport.park();
-            System.out.println("ParkThread执行完成");
+            System.out.println("线程："+ Thread.currentThread().getName()+"ParkThread执行完成");
         }
     }
 }

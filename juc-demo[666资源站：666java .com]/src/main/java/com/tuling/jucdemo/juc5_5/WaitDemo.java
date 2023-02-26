@@ -1,6 +1,6 @@
 package com.tuling.jucdemo.juc5_5;
 
-public class WaitDemo {
+public class  WaitDemo {
 
     private static Object lock = new Object();
     private static  boolean flag = true;
