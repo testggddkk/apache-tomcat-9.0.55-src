@@ -18,10 +18,45 @@ public class ThreadExecuteTest {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
+        // java 实现线程的方式  其实只有一种,  就是
+        new Thread().start();
+        // 创建线程干活，是需要  Runnable 接口实现来干活
+//         Thread  这个类就是  实现了 Runnable 接口
+//        FutureTask 这个类 实现了 RunnableFuture  接口  RunnableFuture 这个接口继承了  Runnable 接口
+//                FutureTask 的构造函数有2个  Callable 和 Runnable
+//                Callable
+
+
+
+//
+//        new Thread(new FutureTask<>(new Callable<Object>() {
+//            @Override
+//            public Object call() throws Exception {
+//                return null;
+//            }
+//        }));
+
+
+
+
+        FutureTask futureTask=new FutureTask(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(1);
+            }
+        },new Object());
+        Object o = futureTask.get();
+
+
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                log.debug("通过Runnable方式执行任务");
+
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
 
@@ -31,23 +66,32 @@ public class ThreadExecuteTest {
         // new Thread(runnable).start();
         // new Object()--->jvm JavaThread
 
-        new Thread(runnable).start();
-        // 这是一个真正的线程吗？  普通对象的方法调用
-        new Thread(runnable).run();
-        runnable.run();
-
-
-//        FutureTask task = new FutureTask(new Callable() {
-//            @Override
-//            public Object call() throws Exception {
-//                log.debug("通过Callable方式执行任务");
-//                Thread.sleep(3000);
-//                return "返回任务结果";
-//            }
-//        });
+//        Thread thread = new Thread(runnable);
+//        log.debug("线程状态：{}", thread.getState());
+//        thread.start();
+//        log.debug("线程状态：{}", thread.getState());
 //
-//        new Thread(task).start();
-//        log.debug("结果：{}",task.get());
+//        // 这是一个真正的线程吗？  普通对象的方法调用
+//        Thread thread1 = new Thread(runnable);
+//        log.debug("线程1状态：{}", thread1.getState());
+//        thread1.run();
+//        log.debug("线程1状态：{}", thread1.getState());
+//
+//
+//        runnable.run();
+
+
+        FutureTask task = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                log.debug("通过Callable方式执行任务");
+                Thread.sleep(3000);
+                return "返回任务结果";
+            }
+        });
+
+        new Thread(task).start();
+        log.debug("结果：{}",task.get());
 
 
 //        ExecutorService executor = Executors.newFixedThreadPool(2);
