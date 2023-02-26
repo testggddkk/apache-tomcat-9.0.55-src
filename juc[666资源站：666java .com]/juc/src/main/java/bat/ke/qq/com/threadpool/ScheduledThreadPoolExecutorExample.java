@@ -40,6 +40,9 @@ class Task implements Runnable {
 
     public void run() {
 
+        if(true){
+            throw  new NullPointerException();
+        }
         System.out.println("Executing : " + name + ", Current Seconds : " + new Date().getSeconds());
         try {
             Random random=new Random();
