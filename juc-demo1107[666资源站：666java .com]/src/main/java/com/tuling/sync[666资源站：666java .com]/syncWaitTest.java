@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author  Fox
  */
 @Slf4j
-public class SyncWaitTest {
+public class syncWaitTest {
 
     private Object lock = new Object();
 
